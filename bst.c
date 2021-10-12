@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "bst.h"
 
 Node* newNode(int data) {
@@ -12,71 +13,50 @@ Node* newNode(int data) {
     return n;
 }
 
-Node* insert(Node* n, int key) {
-    if (n == NULL) {
+Node* insert(Node* root, int key) {
+    if (root == NULL) {
         return newNode(key);
     }
-    if (key < n->key) {
-        n->left = insert(n->left, key);
-    }
-    else {
-        n->right = insert(n->right, key);
-    }
-    return n;
-}
-
-Node* search(Node* root, int key) {
-    //If tree is empty, or if key is at the root
-    if (root == NULL || root->key == key) {
-        return root;
-    }
-    //Check if key is greater than root's key
-    if (key > root->key) {
-        return search(root->right, key);
-    }
-        //Otherwise, the key is less than the root's key
-    else {
-        return search(root->left, key);
-    }
-}
-
-Node* minValueNode(Node* n) {
-    Node* current = n;
-    while (current && current->left != NULL) {
-        current = current->left;
-    }
-    return current;
-}
-
-Node* delete(Node *root, int key) {
-    //Check if tree is empty
-    if (root == NULL) {
-        return root;
-    }
-
-    //Find the node to delete
     if (key < root->key) {
-        root->left = delete(root->left, key);
+        root->left = insert(root->left, key);
     }
     else if (key > root->key) {
-        root->right = delete(root->right, key);
-    }
-    else {
-        //Check if the node has one or no children
-        if (root->left == NULL) {
-            Node* temp = root->right;
-            free(root);
-            return temp;
-        }
-        else if (root->right == NULL) {
-            Node *temp = root->left;
-            free(root);
-            return temp;
-        }
-        //If the node has two children
-        Node* temp = minValueNode(root->right);
-        root->key = temp->key;
-        root->right = delete(root->right, temp->key);
+        root->right = insert(root->right, key);
     }
     return root;
+}
+
+int search(Node* root, int key) {
+    if (root == NULL) {
+        return 0;
+    }
+    if (key == root->key) {
+        return 1;
+    }
+    else if (key < root->key) {
+        return search(root->left, key);
+    }
+    else if (key > root->key) {
+        return search(root->right, key);
+    }
+    return 0;
+}
+
+int inorder(Node* root, char* treeStr, int pos) {
+    if (root == NULL) {
+        return pos;
+    }
+    pos = inorder(root->left, treeStr, pos);
+    pos += sprintf(treeStr + pos, "%d ", root->key);
+    pos = inorder(root->right, treeStr, pos);
+    return pos;
+}
+
+void release(Node* root) {
+    if (root == NULL) {
+        return;
+    }
+    release(root->left);
+    release(root->right);
+    free(root);
 }

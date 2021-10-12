@@ -7,10 +7,9 @@ typedef struct Node{
     struct Node* right;
 } Node;
 
-Node* newNode(int data);
-Node* insert(Node*, int);
-Node* search(Node*, int);
-Node* delete(Node*, int);
-
+Node* insert(Node* root, int key);
+int search(Node* root, int key);
+int inorder(Node* root, char* treeStr, int pos);
+void release(Node* root);
 
 #endif //BST_H

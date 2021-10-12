@@ -1,17 +1,34 @@
 #include <stdio.h>
 #include "io.h"
 
-char getOption() {
-    char c;
-    printf("Enter (i)nsert, (s)earch, inorder (t)raveral, or (q)uit: ");
-    scanf("%c", &c);
+char getCommand() {
+    char c = ' ';
+    printf("Enter (i)nsert, (s)earch, inorder (t)raversal, or (q)uit: ");
+    scanf(" %c", &c);
     return c;
 }
 
-void inorder(Node* root) {
-    if (root != NULL) {
-        inorder(root->left);
-        printf("%d \n", root->key);
-        inorder(root->right);
+int getValue(char command) {
+    int i;
+    if (command == 'i') {
+        printf("Enter a number to insert: ");
     }
+    else {
+        printf("Enter a number to search for: ");
+    }
+    scanf("%d", &i);
+    return i;
+}
+
+void printSearch(int isInTree, int value) {
+    if (isInTree) {
+        printf("%d is in the tree.\n", value);
+    }
+    else {
+        printf("%d is not in the tree.\n", value);
+    }
+}
+
+void printInorder(char* tree) {
+    printf("%s\n", tree);
 }

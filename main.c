@@ -1,18 +1,36 @@
-#include <stdio.h>
+#include <stdlib.h>
 #include "bst.h"
 #include "io.h"
 
 int main() {
     Node* root = NULL;
-    root = insert(root, 50);
-    insert(root, 30);
-    insert(root, 20);
-    insert(root, 40);
-    insert(root, 70);
-    insert(root, 60);
-    insert(root, 80);
+    int value;
+    int quit = 0;
+    char command;
+    char treeStr[100];
 
-    inorder(root);
-
+    while (!quit) {
+        command = getCommand();
+        switch (command) {
+            case 'i':
+                value = getValue(command);
+                root = insert(root, value);
+                break;
+            case 's':
+                value = getValue(command);
+                printSearch(search(root, value), value);
+                break;
+            case 't':
+                inorder(root, treeStr, 0);
+                printInorder(treeStr);
+                break;
+            case 'q':
+                quit = 1;
+                break;
+            default:
+                break;
+        }
+    }
+    release(root);
     return 0;
 }
